@@ -404,50 +404,6 @@ elif st.session_state.page == "Quraan":
                 url = f"https://download.quranicaudio.com/quran/yasser_ad-dussary/{i:03}.mp3"
                 st.audio(url, format="audio/mp3")
 
-# Tasbih
-elif st.session_state.page == "Tasbih":
-    with col2:
-        st.title("Tasbih")
-
-    if st.button("⬅ Home", type="primary"):
-        st.divider()
-        st.session_state.page = "Home"
-        st.rerun()
-    else:
-        st.divider()
-    center_x = 250
-    center_y = 250
-    big_radius = 150
-    bead_radius = 14
-
-    svg = ""
-
-    for i in range(33):
-        angle = 2 * math.pi * i / 33 - math.pi / 2  # Start at the top
-
-        x = center_x + big_radius * math.cos(angle)
-        y = center_y + big_radius * math.sin(angle)
-
-        svg += f"""
-        <circle
-            cx="{x}"
-            cy="{y}"
-            r="{bead_radius}"
-            fill="#c9a66b"
-            stroke="#3b2a1a"
-            stroke-width="2"
-        />
-        """
-
-    html = f"""
-    <svg width="500" height="500" viewBox="0 0 500 500">
-        {svg}
-    </svg>
-    """
-
-    comp.html(html, height=500)
-    
-
 # Treasure Hunt
 elif st.session_state.page == "Treasure Hunt":
     with col2:
