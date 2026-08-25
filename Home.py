@@ -128,7 +128,7 @@ if st.session_state.page == "Home":
     with col2:
         st.title("Nona Islam")
 
-    labels = ["Azkar", "Quraan", "Tasbih", "Treasure Hunt"]
+    labels = ["Azkar", "Quraan", "Treasure Hunt"]
     cols = st.columns(len(labels))
 
     for col, label in zip(cols, labels):
@@ -137,8 +137,6 @@ if st.session_state.page == "Home":
                 st.image("images/Azkar.jpg", width=80)
             elif label == "Quraan":
                 st.image("images/Quraan.jpg", width=80)
-            elif label == "Tasbih":
-                st.image("images/Tasbih.jpg", width=80)
             elif label == "Treasure Hunt":
                 st.image("images/Treasure.jpg", width=80)
 
