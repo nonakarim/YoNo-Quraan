@@ -1,16 +1,133 @@
 import streamlit as st
 import streamlit.components.v1 as comp
 import math
+import base64
+from streamlit_clickable_images import clickable_images
+from PIL import Image
+import random
+import time
+
+if "evening_started" not in st.session_state:
+    st.session_state.evening_started = False
+
+if "Key" not in st.session_state:
+    st.session_state.Key = 0
+
+if "morning_started" not in st.session_state:
+    st.session_state.morning_started = False
+
+if "printed" not in st.session_state:
+    st.session_state.printed = False
+
+if "zekr" not in st.session_state:
+    st.session_state.zekr = 0
+
+if "result" not in st.session_state:
+    st.session_state.result = ""
+    
+if "quiz_started" not in st.session_state:
+    st.session_state.quiz_started = False
 
 if "page" not in st.session_state:
     st.session_state.page = "Home"
 
+if "answered" not in st.session_state:
+    st.session_state.answered = False
+
 col1, col2, col3 = st.columns([1,3,1])
 
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background-color: #8A9A5B;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+string = ["Which companion was called \"Sayfo Allah Almaslool\" 🗡️", "Who was the first khalifa after the death of Profit Mohammad :crown:"]
+if "num" not in st.session_state:
+  st.session_state.num = 1
+
+title = string[0]
+
+@st.dialog(title)
+def Q1():
+
+    col1, col2 = st.columns([1,1])
+    if st.session_state.num == 1:
+        if st.session_state.answered == False:
+            with col1:
+                B1 = st.button("Khalid ibn al-Walid")
+                B2 = st.button("Abu Bakr")
+            with col2:
+                B3 = st.button("Uthman ibn Affan")
+                B4 = st.button("Ali ibn Abi Talib")
+
+            if B1:
+                st.session_state.answered = True
+                st.text("Correct",text_alignment="center", width="stretch")
+                time.sleep(2)
+                st.rerun()
+            elif B2:
+                st.session_state.answered = True
+                st.text("Incorrect",text_alignment="center", width="stretch")
+                time.sleep(2)
+                st.rerun()
+
+            elif B3:
+                st.session_state.answered = True
+                st.text("Incorrect",text_alignment="center", width="stretch")
+                time.sleep(2)
+                st.rerun()
+            elif B4:
+                st.session_state.answered = True
+                st.text("Incorrect",text_alignment="center", width="stretch")
+                time.sleep(2)
+                st.rerun()
+
+        else:
+            next = st.button("➡️ Next Question", type="primary", width="stretch")
+
+            if next:
+                st.session_state.answered = False
+                st.session_state.num = 2
+                st.rerun()
+
+@st.dialog(string[1])
+def Q2():
+    col1, col2 = st.columns([1,1])
+    if st.session_state.num == 2:
+        if st.session_state.answered == False:
+            with col1:
+                B1 = st.button("Khalid ibn al-Walid")
+                B2 = st.button("Abu Bakr")
+            with col2:
+                B3 = st.button("Uthman ibn Affan")
+                B4 = st.button("Ali ibn Abi Talib")
+
+            if B1:
+                st.session_state.answered = True
+                st.text("Incorrect",text_alignment="center", width="stretch")
+            elif B2:
+                st.session_state.answered = True
+                st.text("Correct",text_alignment="center", width="stretch")
+
+            elif B3:
+                st.session_state.answered = True
+                st.text("Incorrect",text_alignment="center", width="stretch")
+            elif B4:
+                st.session_state.answered = True
+                st.text("Incorrect",text_alignment="center", width="stretch")
+
+
+    
 # Home
 if st.session_state.page == "Home":
     with col2:
-        st.title("YoNo Islam")
+        st.title("Nona Islam")
 
     labels = ["Azkar", "Quraan", "Tasbih", "Treasure Hunt"]
     cols = st.columns(len(labels))
@@ -32,40 +149,225 @@ if st.session_state.page == "Home":
 
 # Azkar
 elif st.session_state.page == "Azkar":
+
     with col2:
         st.title("Azkar")
 
-    if st.button("⬅ Home"):
-        st.divider()
+    if st.button("⬅ Home", type="primary"):
         st.session_state.page = "Home"
+        st.session_state.morning_started = False
+        st.session_state.zekr = 0
         st.rerun()
-    
-    else:
-        st.divider()
-        labels = ["Morning Azkar", "Evening Azkar"]
-        cols = st.columns(len(labels))
 
-        
+    st.divider()
 
-        for col, label in zip(cols, labels):
-            with col:
+    labels = ["Morning Azkar", "Evening Azkar"]
+    cols = st.columns(len(labels))
+
+    for col, label in zip(cols, labels):
+
+        with col:
+
+            if label == "Morning Azkar":
+                st.image("images/A.jpg", width=80)
+            else:
+                st.image("images/A.jpg", width=80)
+
+            if st.button(label, key=label):
+
                 if label == "Morning Azkar":
-                    st.image("images/A.jpg", width=80)
+                    st.session_state.evening_started = False
+                    st.session_state.morning_started = True
+                    st.session_state.zekr = 0
+                    st.rerun()
                 elif label == "Evening Azkar":
-                    st.image("images/A.jpg", width=80)
-                    
-                if st.button(label):
-                    if label == "Morning Azkar":
-                        st.image("images/MA.png")
-                    else:
-                        st.image("images/EA.png")
+                    st.session_state.morning_started = False
+                    st.session_state.evening_started = True
+                    st.session_state.zekr = 0
+                    st.rerun()
+
+    if st.session_state.morning_started:
+        azkar = [
+            "🌅 أذكار الصباح",
+
+            "1. آية الكرسي — مرة واحدة\n"
+            "اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ "
+            "لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ...",
+
+            "2. سورة الإخلاص — 3 مرات\n"
+            "قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ ۝ "
+            "لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ "
+            "وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ",
+
+            "3. سورة الفلق — 3 مرات",
+
+            "4. سورة الناس — 3 مرات",
+
+            "5. أصبحنا وأصبح الملك لله\n"
+            "أصبحنا وأصبح الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له، "
+            "له الملك وله الحمد وهو على كل شيء قدير.",
+
+            "6. سيد الاستغفار — مرة واحدة\n"
+            "اللهم أنت ربي لا إله إلا أنت، خلقتني وأنا عبدك، "
+            "وأنا على عهدك ووعدك ما استطعت، أعوذ بك من شر ما صنعت، "
+            "أبوء لك بنعمتك عليَّ، وأبوء بذنبي، فاغفر لي، "
+            "فإنه لا يغفر الذنوب إلا أنت.",
+
+            "7. بسم الله الذي لا يضر — 3 مرات\n"
+            "بسم الله الذي لا يضر مع اسمه شيء في الأرض ولا في السماء "
+            "وهو السميع العليم.",
+
+            "8. رضيت بالله ربًا — 3 مرات\n"
+            "رضيت بالله ربًا، وبالإسلام دينًا، وبمحمد ﷺ نبيًا.",
+
+            "9. اللهم إني أصبحت أشهدك — 4 مرات\n"
+            "اللهم إني أصبحت أشهدك، وأشهد حملة عرشك، وملائكتك، "
+            "وجميع خلقك، أنك أنت الله لا إله إلا أنت وحدك لا شريك لك، "
+            "وأن محمدًا عبدك ورسولك.",
+
+            "10. اللهم ما أصبح بي من نعمة\n"
+            "اللهم ما أصبح بي من نعمة أو بأحد من خلقك فمنك وحدك "
+            "لا شريك لك، فلك الحمد ولك الشكر.",
+
+            "11. سبحان الله وبحمده — 100 مرة",
+
+            "12. لا إله إلا الله وحده لا شريك له — 100 مرة\n"
+            "لا إله إلا الله وحده لا شريك له، له الملك وله الحمد "
+            "وهو على كل شيء قدير.",
+
+            "13. اللهم عافني في بدني — 3 مرات\n"
+            "اللهم عافني في بدني، اللهم عافني في سمعي، "
+            "اللهم عافني في بصري، لا إله إلا أنت.",
+
+            "14. اللهم إني أسألك العفو والعافية — 3 مرات\n"
+            "اللهم إني أسألك العفو والعافية في الدنيا والآخرة.",
+
+            "15. أعوذ بكلمات الله التامات — 3 مرات\n"
+            "أعوذ بكلمات الله التامات من شر ما خلق."
+        ]
+        if st.session_state.zekr < len(azkar):
+            st.markdown(
+                f"""
+                <p style="
+                    color:#FFF8E7;
+                    font-weight:bold;
+                    font-size:24px;
+                    text-align:center;
+                ">
+                    {azkar[st.session_state.zekr]}
+                </p>
+                """,
+                unsafe_allow_html=True
+            )
+
+            if st.button(
+                "Done",
+                type="primary",
+                width="stretch",
+                key="done_morning"
+            ):
+                st.session_state.zekr += 1
+                st.rerun()
+
+        else:
+            st.success("🌅 تم الانتهاء من أذكار الصباح")
+
+    if st.session_state.evening_started:
+        azkar_evening = [
+                "🌙 أذكار المساء",
+
+                "1. آية الكرسي — مرة واحدة\n"
+                "اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ "
+                "لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ...",
+
+                "2. سورة الإخلاص — 3 مرات\n"
+                "قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ ۝ "
+                "لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ "
+                "وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ",
+
+                "3. سورة الفلق — 3 مرات",
+
+                "4. سورة الناس — 3 مرات",
+
+                "5. أمسينا وأمسى الملك لله\n"
+                "أمسينا وأمسى الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له، "
+                "له الملك وله الحمد وهو على كل شيء قدير.",
+
+                "6. سيد الاستغفار — مرة واحدة\n"
+                "اللهم أنت ربي لا إله إلا أنت، خلقتني وأنا عبدك، "
+                "وأنا على عهدك ووعدك ما استطعت، أعوذ بك من شر ما صنعت، "
+                "أبوء لك بنعمتك عليَّ، وأبوء بذنبي، فاغفر لي، "
+                "فإنه لا يغفر الذنوب إلا أنت.",
+
+                "7. بسم الله الذي لا يضر — 3 مرات\n"
+                "بسم الله الذي لا يضر مع اسمه شيء في الأرض ولا في السماء "
+                "وهو السميع العليم.",
+
+                "8. رضيت بالله ربًا — 3 مرات\n"
+                "رضيت بالله ربًا، وبالإسلام دينًا، وبمحمد ﷺ نبيًا.",
+
+                "9. اللهم إني أمسيت أشهدك — 4 مرات\n"
+                "اللهم إني أمسيت أشهدك، وأشهد حملة عرشك، وملائكتك، "
+                "وجميع خلقك، أنك أنت الله لا إله إلا أنت وحدك لا شريك لك، "
+                "وأن محمدًا عبدك ورسولك.",
+
+                "10. اللهم ما أمسى بي من نعمة\n"
+                "اللهم ما أمسى بي من نعمة أو بأحد من خلقك فمنك وحدك "
+                "لا شريك لك، فلك الحمد ولك الشكر.",
+
+                "11. سبحان الله وبحمده — 100 مرة",
+
+                "12. لا إله إلا الله وحده لا شريك له — 100 مرة\n"
+                "لا إله إلا الله وحده لا شريك له، له الملك وله الحمد "
+                "وهو على كل شيء قدير.",
+
+                "13. اللهم عافني في بدني — 3 مرات\n"
+                "اللهم عافني في بدني، اللهم عافني في سمعي، "
+                "اللهم عافني في بصري، لا إله إلا أنت.",
+
+                "14. اللهم إني أسألك العفو والعافية — 3 مرات\n"
+                "اللهم إني أسألك العفو والعافية في الدنيا والآخرة.",
+
+                "15. أعوذ بكلمات الله التامات — 3 مرات\n"
+                "أعوذ بكلمات الله التامات من شر ما خلق."
+            ]
+
+        if st.session_state.zekr < len(azkar_evening):
+            st.markdown(
+                f"""
+                <p style="
+                    color:#FFF8E7;
+                    font-weight:bold;
+                    font-size:24px;
+                    text-align:center;
+                ">
+                    {azkar_evening[st.session_state.zekr]}
+                </p>
+                """,
+                unsafe_allow_html=True
+            )
+
+            if st.button(
+                "Done",
+                type="primary",
+                width="stretch",
+                key="done_evening"
+            ):
+                st.session_state.zekr += 1
+                st.rerun()
+
+        else:
+            col1,col2 = st.columns(2)
+            with col2:
+                st.success("🌙 تم الانتهاء من أذكار المساء")
+
 
 # Quraan
 elif st.session_state.page == "Quraan":
     with col2:
         st.title("Quraan")
 
-    if st.button("⬅ Home"):
+    if st.button("⬅ Home", type="primary"):
         st.divider()
         st.session_state.page = "Home"
         st.rerun()
@@ -103,5 +405,78 @@ elif st.session_state.page == "Quraan":
                 url = f"https://download.quranicaudio.com/quran/yasser_ad-dussary/{i:03}.mp3"
                 st.audio(url, format="audio/mp3")
 
+# Tasbih
+elif st.session_state.page == "Tasbih":
+    with col2:
+        st.title("Tasbih")
+
+    if st.button("⬅ Home", type="primary"):
+        st.divider()
+        st.session_state.page = "Home"
+        st.rerun()
+    else:
+        st.divider()
+    center_x = 250
+    center_y = 250
+    big_radius = 150
+    bead_radius = 14
+
+    svg = ""
+
+    for i in range(33):
+        angle = 2 * math.pi * i / 33 - math.pi / 2  # Start at the top
+
+        x = center_x + big_radius * math.cos(angle)
+        y = center_y + big_radius * math.sin(angle)
+
+        svg += f"""
+        <circle
+            cx="{x}"
+            cy="{y}"
+            r="{bead_radius}"
+            fill="#c9a66b"
+            stroke="#3b2a1a"
+            stroke-width="2"
+        />
+        """
+
+    html = f"""
+    <svg width="500" height="500" viewBox="0 0 500 500">
+        {svg}
+    </svg>
+    """
+
+    comp.html(html, height=500)
+    
+
+# Treasure Hunt
+elif st.session_state.page == "Treasure Hunt":
+    with col2:
+        st.title("Treasure Hunt")
+    with st.container():
+        home = st.button("⬅ Home", type="primary")
+        if home:
+            st.divider()
+            st.session_state.page = "Home"
+            st.rerun()
+        
+    if home != True:
+        st.divider()
+        st.image("images/TH.png", width = 600)
+        st.write("\n\n")
+        st.image("images/TH2.png", width = 600)
 
 
+
+    if st.button(":closed_lock_with_key: start Adventure", type="primary"):
+        st.session_state.quiz_started = True
+        st.session_state.num = 1
+        st.session_state.answered = False
+        st.rerun()
+
+    if st.session_state.quiz_started:
+        if st.session_state.num == 1:
+            Q1()
+        else:
+            Q2()
+        
