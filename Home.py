@@ -2,7 +2,6 @@ import streamlit as st
 import streamlit.components.v1 as comp
 import math
 import base64
-from streamlit_clickable_images import clickable_images
 from PIL import Image
 import random
 import time
