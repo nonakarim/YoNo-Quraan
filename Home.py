@@ -6,6 +6,9 @@ from PIL import Image
 import random
 import time
 
+if "selected_surah" not in st.session_state:
+    st.session_state.selected_surah = 0
+
 if "evening_started" not in st.session_state:
     st.session_state.evening_started = False
 
@@ -396,10 +399,26 @@ elif st.session_state.page == "Quraan":
             "Al-Masad", "Al-Ikhlas", "Al-Falaq", "An-Nas"
         ]
 
-        
-        for i, surah in enumerate(surahs, start=1):
-            if st.button(surah):
+        col1,col2,col3 = st.columns(3)
+
+        with col2: 
+            sheikhs = st.selectbox("Select your favorite sheikh: ",
+                                [
+                                    "yasser_ad-dussary",
+                                    "Abdul Basit Abdul Samad"
+                                ])
+
+        with st.container(height=250, border=True, width="stretch"):
+            for i, surah in enumerate(surahs, start=1):
+                if st.button(surah, width="stretch"):
+                    st.session_state.selected_surah = i
+        if "selected_surah" in st.session_state and st.session_state.selected_surah != 0:
+            i = st.session_state.selected_surah
+            if sheikhs == "yasser_ad-dussary":
                 url = f"https://download.quranicaudio.com/quran/yasser_ad-dussary/{i:03}.mp3"
+                st.audio(url, format="audio/mp3")
+            else:
+                url = f"https://download.quranicaudio.com/quran/abdulbaset_mujawwad/{i:03}.mp3"
                 st.audio(url, format="audio/mp3")
 
 # Treasure Hunt
