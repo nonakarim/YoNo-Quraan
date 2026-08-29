@@ -5,6 +5,7 @@ import base64
 from PIL import Image
 import random
 import time
+from streamlit_extras.radial_menu import *
 
 if "selected_surah" not in st.session_state:
     st.session_state.selected_surah = 0
@@ -131,21 +132,23 @@ if st.session_state.page == "Home":
     with col2:
         st.title("Nona Islam")
 
-    labels = ["Azkar", "Quraan", "Treasure Hunt"]
-    cols = st.columns(len(labels))
+    st.write("Click the button below to open the radial menu:")
 
-    for col, label in zip(cols, labels):
-        with col:
-            if label == "Azkar":
-                st.image("images/Azkar.jpg", width=80)
-            elif label == "Quraan":
-                st.image("images/Quraan.jpg", width=80)
-            elif label == "Treasure Hunt":
-                st.image("images/Treasure.jpg", width=80)
+    menu = radial_menu(
+            options={
+                "Home": "🏠",
+                "Azkar": "🤲",
+                "Quraan": "📖",
+                "Treasure Hunt": "✨",
+            },
+            key="demo_menu",
+        )
 
-            if st.button(label):
-                st.session_state.page = label
-                st.rerun()
+    selected = menu.get("selection")
+
+    if selected:
+        st.session_state.page = selected
+        st.rerun()
 
 # Azkar
 elif st.session_state.page == "Azkar":
