@@ -146,7 +146,7 @@ if st.session_state.page == "Home":
 
     selected = menu.get("selection")
 
-    if selected:
+    if selected and selected != st.session_state.page:
         st.session_state.page = selected
         st.rerun()
 
