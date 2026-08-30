@@ -6,6 +6,7 @@ from PIL import Image
 import random
 import time
 from streamlit_extras.radial_menu import *
+from streamlit_extras.avatar import *
 
 if "selected_surah" not in st.session_state:
     st.session_state.selected_surah = 0
@@ -132,23 +133,23 @@ if st.session_state.page == "Home":
     with col2:
         st.title("Nona Islam")
 
-    st.write("Click the button below to open the radial menu:")
+        st.write("Click the button below to open the radial menu:")
 
-    menu = radial_menu(
-            options={
-                "Home": "🏠",
-                "Azkar": "🤲",
-                "Quraan": "📖",
-                "Treasure Hunt": "✨",
-            },
-            key="demo_menu",
-        )
+        menu = radial_menu(
+                options={
+                    "Home": "🏠",
+                    "Azkar": "🤲",
+                    "Quraan": "📖",
+                    "Treasure Hunt": "✨",
+                },
+                key="demo_menu",
+            )
 
-    selected = menu.get("selection")
+        selected = menu.get("selection")
 
-    if selected and selected != st.session_state.page:
-        st.session_state.page = selected
-        st.rerun()
+        if selected and selected != st.session_state.page:
+            st.session_state.page = selected
+            st.rerun()
 
 # Azkar
 elif st.session_state.page == "Azkar":
@@ -441,9 +442,19 @@ elif st.session_state.page == "Treasure Hunt":
         st.write("\n\n")
         st.image("images/TH2.png", width = 600)
 
+    with open("images/SA.png", "rb") as f:
+        image = base64.b64encode(f.read()).decode()
+
+    image_url = f"data:image/png;base64,{image}"
 
 
-    if st.button(":closed_lock_with_key: start Adventure", type="primary"):
+    if avatar(
+        image_url,
+        label="",
+        caption="",
+        on_click="rerun",
+        key="",
+    ):
         st.session_state.quiz_started = True
         st.session_state.num = 1
         st.session_state.answered = False
