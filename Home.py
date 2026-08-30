@@ -127,14 +127,15 @@ def Q2():
                 st.text("Incorrect",text_alignment="center", width="stretch")
 
 
-    
+
 # Home
-if st.session_state.page == "Home":
+if st.session_state.page == "Home": 
+    st.title("Nona Islam", text_alignment="center")
+
+    st.markdown("Click the button below to open the radial menu:", text_alignment="center")
+
+    col1,col2,col3 = st.columns([2,1,2])
     with col2:
-        st.title("Nona Islam")
-
-        st.write("Click the button below to open the radial menu:")
-
         menu = radial_menu(
                 options={
                     "Home": "🏠",
@@ -452,6 +453,8 @@ elif st.session_state.page == "Treasure Hunt":
         image_url,
         label="",
         caption="",
+        height = 150,
+        width = 150,
         on_click="rerun",
         key="",
     ):
