@@ -7,6 +7,22 @@ import random
 import time
 from streamlit_extras.radial_menu import *
 from streamlit_extras.avatar import *
+from streamlit_extras.stodo import *
+
+if "Fajr_Prayer" not in st.session_state:
+    st.session_state.Fajr_Prayer = False
+
+if "Duhr_Prayer" not in st.session_state:
+    st.session_state.Duhr_Prayer = False
+
+if "Asr_Prayer" not in st.session_state:
+    st.session_state.Asr_Prayer = False
+
+if "Maghrib_Prayer" not in st.session_state:
+    st.session_state.Maghrib_Prayer = False
+
+if "Isha_Prayer" not in st.session_state:
+    st.session_state.Isha_Prayer = False
 
 if "selected_surah" not in st.session_state:
     st.session_state.selected_surah = 0
@@ -44,12 +60,30 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-color: #8A9A5B;
+        background-color: #3F4A32;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
+
+st.markdown("""
+<style>
+/* Make all text white */
+html, body, [class*="css"] {
+    color: white !important;
+}
+
+/* Headers */
+h1, h2, h3, h4, h5, h6 {
+    color: white !important;
+}
+
+
+
+}
+</style>
+""", unsafe_allow_html=True)
 
 string = ["Which companion was called \"Sayfo Allah Almaslool\" 🗡️", "Who was the first khalifa after the death of Profit Mohammad :crown:"]
 if "num" not in st.session_state:
@@ -126,19 +160,41 @@ def Q2():
                 st.session_state.answered = True
                 st.text("Incorrect",text_alignment="center", width="stretch")
 
+with open("images/Mosque.png", "rb") as f:
+    image = base64.b64encode(f.read()).decode()
 
+st.markdown(
+    f"""
+    <style>
+    .stApp {{
+        background-image:
+            linear-gradient(
+                rgba(63, 74, 50, 0.75),
+                rgba(63, 74, 50, 0.75)
+            ),
+            url("data:image/png;base64,{image}");
+
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 # Home
 if st.session_state.page == "Home": 
     st.title("Nona Islam", text_alignment="center")
 
-    st.markdown("Click the button below to open the radial menu:", text_alignment="center")
+    st.subheader("Click the button below to open the radial menu:", text_alignment="center")
 
     col1,col2,col3 = st.columns([2,1,2])
     with col2:
         menu = radial_menu(
                 options={
                     "Home": "🏠",
+                    "Prayer": "🕋",
                     "Azkar": "🤲",
                     "Quraan": "📖",
                     "Treasure Hunt": "✨",
@@ -151,6 +207,52 @@ if st.session_state.page == "Home":
         if selected and selected != st.session_state.page:
             st.session_state.page = selected
             st.rerun()
+            
+#Prayer
+elif st.session_state.page == "Prayer":
+    st.html("""
+    <style>
+    .st-key-prayer-box > div {
+        border-color: white !important;
+    }
+
+    div[data-testid="stVerticalBlockBorderWrapper"] {
+        border: 1px solid white !important;
+    }
+    </style>
+    """)
+    st.title("Prayer", text_alignment="center")
+    
+    col1, col2, col3 = st.columns(3)
+    with col2:
+        if st.button("⬅ Home", type="primary"):
+            st.session_state.page = "Home"
+        with st.container(height = 250, border = True):
+            st.session_state.Fajr_Prayer = st.checkbox(
+                "🎆 Fajr",
+                value=st.session_state.Fajr_Prayer,
+                key="fajr_checkbox"
+            )
+            st.session_state.Duhr_Prayer = st.checkbox(
+                "🌅 Duhr",
+                value=st.session_state.Duhr_Prayer,
+                key="duhr_checkbox"
+            )
+            st.session_state.Asr_Prayer = st.checkbox(
+                "🌇 Asr",
+                value=st.session_state.Asr_Prayer,
+                key="asr_checkbox"
+            )
+            st.session_state.Maghrib_Prayer = st.checkbox(
+                "🌙 Maghrib",
+                value=st.session_state.Maghrib_Prayer,
+                key="maghrib_checkbox"
+            )
+            st.session_state.Isha_Prayer = st.checkbox(
+                "🌌 Isha",
+                value=st.session_state.Isha_Prayer,
+                key="isha_checkbox"
+            )
 
 # Azkar
 elif st.session_state.page == "Azkar":
