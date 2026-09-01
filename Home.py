@@ -272,22 +272,70 @@ elif st.session_state.page == "Prayer":
 
                 with open("prayers.txt", "w") as prayers:
                     prayers.writelines(lines)
+    
+            asr_saved = "Asr" in saved_prayers
 
-            st.session_state.Asr_Prayer = st.checkbox(
+            asr_checked = st.checkbox(
                 "🌇 Asr",
-                value=st.session_state.Asr_Prayer,
+                value=asr_saved,
                 key="asr_checkbox"
             )
-            st.session_state.Maghrib_Prayer = st.checkbox(
+
+            if asr_checked and not asr_saved:
+                with open("prayers.txt", "a") as prayers:
+                    prayers.write("Asr\n")
+
+            elif not asr_checked and asr_saved:
+                with open("prayers.txt", "r") as prayers:
+                    lines = prayers.readlines()
+
+                lines.remove("Asr\n")
+
+                with open("prayers.txt", "w") as prayers:
+                    prayers.writelines(lines)
+
+            maghrib_saved = "Maghrib" in saved_prayers
+
+            maghrib_checked = st.checkbox(
                 "🌙 Maghrib",
-                value=st.session_state.Maghrib_Prayer,
+                value=maghrib_saved,
                 key="maghrib_checkbox"
             )
-            st.session_state.Isha_Prayer = st.checkbox(
+
+            if maghrib_checked and not maghrib_saved:
+                with open("prayers.txt", "a") as prayers:
+                    prayers.write("Maghrib\n")
+
+            elif not maghrib_checked and maghrib_saved:
+                with open("prayers.txt", "r") as prayers:
+                    lines = prayers.readlines()
+
+                lines.remove("Maghrib\n")
+
+                with open("prayers.txt", "w") as prayers:
+                    prayers.writelines(lines)
+
+
+            isha_saved = "Isha" in saved_prayers
+
+            isha_checked = st.checkbox(
                 "🌌 Isha",
-                value=st.session_state.Isha_Prayer,
+                value=isha_saved,
                 key="isha_checkbox"
             )
+
+            if isha_checked and not isha_saved:
+                with open("prayers.txt", "a") as prayers:
+                    prayers.write("Isha\n")
+
+            elif not isha_checked and isha_saved:
+                with open("prayers.txt", "r") as prayers:
+                    lines = prayers.readlines()
+
+                lines.remove("Isha\n")
+
+                with open("prayers.txt", "w") as prayers:
+                    prayers.writelines(lines)
 
 # Azkar
 elif st.session_state.page == "Azkar":

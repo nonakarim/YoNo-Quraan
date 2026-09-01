@@ -1,2 +1,4 @@
 FajrFajr
 Fajr
+Duhr
+Asr
