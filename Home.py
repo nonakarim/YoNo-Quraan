@@ -222,22 +222,57 @@ elif st.session_state.page == "Prayer":
     </style>
     """)
     st.title("Prayer", text_alignment="center")
-    
+
     col1, col2, col3 = st.columns(3)
     with col2:
         if st.button("⬅ Home", type="primary"):
             st.session_state.page = "Home"
         with st.container(height = 250, border = True):
-            st.session_state.Fajr_Prayer = st.checkbox(
+            with open("prayers.txt", "a+") as prayers:
+                prayers.seek(0)
+
+                saved_prayers = [line.strip() for line in prayers]
+
+            fajr_saved = "Fajr" in saved_prayers
+
+            f_checked = st.checkbox(
                 "🎆 Fajr",
-                value=st.session_state.Fajr_Prayer,
+                value=fajr_saved,
                 key="fajr_checkbox"
             )
-            st.session_state.Duhr_Prayer = st.checkbox(
+
+            if f_checked and not fajr_saved:
+                with open("prayers.txt", "a") as prayers:
+                    prayers.write("Fajr\n")
+            elif not f_checked and fajr_saved:
+                with open("prayers.txt", "r") as prayers:
+                    lines = prayers.readlines()
+
+                lines.remove("Fajr\n")
+
+                with open("prayers.txt", "w") as prayers:
+                    prayers.writelines(lines)
+                     
+            duhr_saved = "Duhr" in saved_prayers
+
+            d_checked = st.checkbox(
                 "🌅 Duhr",
-                value=st.session_state.Duhr_Prayer,
+                value=duhr_saved,
                 key="duhr_checkbox"
             )
+
+            if d_checked and not duhr_saved:
+                with open("prayers.txt", "a") as prayers:
+                    prayers.write("Duhr\n")
+            elif not d_checked and duhr_saved:
+                with open("prayers.txt", "r") as prayers:
+                    lines = prayers.readlines()
+
+                lines.remove("Duhr\n")
+
+                with open("prayers.txt", "w") as prayers:
+                    prayers.writelines(lines)
+
             st.session_state.Asr_Prayer = st.checkbox(
                 "🌇 Asr",
                 value=st.session_state.Asr_Prayer,
