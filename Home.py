@@ -9,6 +9,16 @@ from streamlit_extras.radial_menu import *
 from streamlit_extras.avatar import *
 from streamlit_extras.stodo import *
 
+import streamlit as st
+
+st.set_page_config(
+    page_title="Nona Quran",
+    page_icon="📖",
+    layout="wide",
+    initial_sidebar_state="collapsed"
+)
+
+
 if "Fajr_Prayer" not in st.session_state:
     st.session_state.Fajr_Prayer = False
 
